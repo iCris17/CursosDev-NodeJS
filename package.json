@@ -1,0 +1,17 @@
+{
+  "name": "cursos-dev",
+  "version": "1.0.0",
+  "description": "Proyecto del curso",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Cristian",
+  "license": "ISC",
+  "dependencies": {
+    "nodemon": "^2.0.21"
+  },
+  "devDependencies": {
+    "typescript": "^4.9.5"
+  }
+}
