@@ -1,6 +1,15 @@
 import fs from "fs"
 import express, {Request, Response, Application} from "express"
 
+interface Product {
+    id: number;
+    name: string;
+    price: number;
+    isAvailable: boolean
+}
+
+type Products = Product[]
+
 const users = [
     {id: 1, name: "John", active: true},
     {id: 2, name: "John2", active: false},
@@ -15,7 +24,7 @@ interface Product {
     isAvailable: boolean;
 }
 
-const products: Product[] = []
+const products:Products = [];
 
 class App {
     public app: Application;
@@ -35,6 +44,8 @@ class App {
         this.app.get("/productos", this.listProducts);
         this.app.get("/productos/:id", this.getOneProduct);
         this.app.post("/productos", this.insertProduct);
+        this.app.put("/productos/:id", this.updateProduct);
+        this.app.delete("/productos/:id", this.deleteProduct);
 
         this.app.post("/usuarios", this.listUsers)
         this.app.post("/usuarios/insert", this.insertUser)
@@ -59,9 +70,8 @@ class App {
 
         if(product){
             return res.json(product);
-        }else {
-            res.status(404).send("Product not found");
         }
+        res.status(404).send("Product not found");
     }
 
     insertProduct(req: Request, res: Response){
@@ -88,7 +98,14 @@ class App {
         const {id} = req.params
         const {name, price, isAvailable} = req.body
         const product = products.find((product) => product.id === +id);
-
+        if (product) {
+            product.name = name;
+            product.price = price;
+            product.isAvailable = isAvailable;
+            res.json(product);
+        } else {
+            res.status(404).send("Product not found")
+        }
     }
 
     insertUser(req: Request, res: Response){
