@@ -1,5 +1,6 @@
 import fs from "fs"
 import express, {Request, Response, Application} from "express"
+import ProductosRouter from "./modules/productos/routes";
 
 interface Product {
     id: number;
@@ -41,11 +42,12 @@ class App {
     }
 
     handleRoutes() {
-        this.app.get("/productos", this.listProducts);
-        this.app.get("/productos/:id", this.getOneProduct);
-        this.app.post("/productos", this.insertProduct);
-        this.app.put("/productos/:id", this.updateProduct);
-        this.app.delete("/productos/:id", this.deleteProduct);
+        this.app.use("/productos", ProductosRouter)
+        // this.app.get("/productos", this.listProducts);
+        // this.app.get("/productos/:id", this.getOneProduct);
+        // this.app.post("/productos", this.insertProduct);
+        // this.app.put("/productos/:id", this.updateProduct);
+        // this.app.delete("/productos/:id", this.deleteProduct);
 
         this.app.post("/usuarios", this.listUsers)
         this.app.post("/usuarios/insert", this.insertUser)
