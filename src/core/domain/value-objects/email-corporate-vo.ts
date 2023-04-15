@@ -1,24 +1,21 @@
-export class ValueObject<TypeValue> {
-    protected value: TypeValue
+import { ValueObject } from "./value-object";
 
-    getValue(): TypeValue {
-        return this.value
-    }
-}
-
-export class EmailCorporateVO extends ValueObject<string>{
-    private value: string
-
-    private constructor(email: string){
+export class EmailCorporateVO extends ValueObject<string> {
+    private constructor(email: string) {
         super();
-        this.value = email
+        this.value = email;
     }
 
-    private static validateEmailCorporate(email: string){
-        const domainAllowed = ["company.org", "company.com", ]
+    private static validateEmailCorporate(email:string) {
+        const domainAllowed = ["company.org", "company.com"]
+        const domain = email.split("@")[1];
+        return domainAllowed.includes(domain)
     }
 
-    static create(email: string){
-        console.log(email);
+    static create(email:string): EmailCorporateVO {
+        if (!this.validateEmailCorporate(email)){
+            throw new Error("Invalid email corporate!");
+        }
+        return new EmailCorporateVO(email);
     }
 }
