@@ -3,4 +3,5 @@ data-mysql
 logs
 MyProject
 node_modules
-prueba_cors
+prueba-cors
+dist

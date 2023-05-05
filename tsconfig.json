@@ -14,5 +14,5 @@
     },
   },
   "exclude": ["node_modules", "cache"],
-  "include": ["src/**/*"]
+  "include": ["src/**/*", "gulpfile.js"]
 }
