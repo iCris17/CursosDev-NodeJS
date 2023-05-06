@@ -1,4 +1,4 @@
-
+{
     "AWSEBDockerrunVersion": "1",
     "Image": {
         "Name": "339371549069.dkr.ecr.us-east-1.amazonaws.com/cursonodejs12:latest"
@@ -8,3 +8,4 @@
             "ContainerPort": "80"
         }
     ]
+}
