@@ -1,8 +1,8 @@
 import fs from "fs"
 import express, {Request, Response, Application} from "express"
-import ProductosRouter from "./modules/productos/routes";
 import cors from "cors";
 import helmet from "helmet"
+import { userRoutes } from "./modules/user/interfaces/http/user.routes";
 
 
 interface Product {
@@ -70,152 +70,7 @@ class App {
     }
 
     handleRoutes() {
-        this.app.use("/productos", cors(), ProductosRouter)
-
-        this.app.post("/usuarios", this.listUsers)
-        this.app.post("/usuarios/insert", this.insertUser)
-        this.app.get("/usuarios", this.responseGet)
-        this.app.get("/usuarios/html", this.responseHtml)
-        this.app.get("/usuarios/json", this.responseJson)
-        this.app.get("/usuarios/pdf", this.responsePdf)
-        this.app.get("/usuarios/:active", this.filterUsersByActive)
-    }
-
-    listProducts(req: Request, res:Response){
-        if (products.length === 0){
-            return res.status(404).send("No products found");
-        }
-        res.json(products);
-    }
-
-    getOneProduct(req: Request, res: Response){
-        const {id} = req.params;
-        const product = products.find((product) => product.id === +id)
-        res.json(product);
-
-        if(product){
-            return res.json(product);
-        }
-        res.status(404).send("Product not found");
-    }
-
-    insertProduct(req: Request, res: Response){
-        const {name, price, isAvailable} = req.body;
-        const product = { id:products.length, name, price, isAvailable};
-        products.push(product);
-        res.json(product)
-    }
-
-    deleteProduct(req: Request, res: Response){
-        const {id} = req.params;
-        const product = products.find((product) => product.id === +id)
-
-        if(product){
-            const index = products.indexOf(product);
-            products.splice(index, 1);
-            return res.json(product);
-        }
-
-        res.status(404).send("Product not found")
-    }
-
-    updateProduct(req: Request, res: Response){
-        const {id} = req.params
-        const {name, price, isAvailable} = req.body
-        const product = products.find((product) => product.id === +id);
-        if (product) {
-            product.name = name;
-            product.price = price;
-            product.isAvailable = isAvailable;
-            res.json(product);
-        } else {
-            res.status(404).send("Product not found")
-        }
-    }
-
-    insertUser(req: Request, res: Response){
-        const {name} = req.body
-        const user = {id: users.length, name: name, active: true}
-
-        users.push(user);
-
-        res.json(users)
-
-        //res.writeHead(200, {"content-type": "application/json"})
-        //res.end(JSON.stringify(user))
-        //console.log(user)
-        //res.writeHead(200, { "content-type": "text/plain"})
-        //res.end("Comunicación con el método POST")
-    }
-
-    listUsers = (req: Request, res: Response) => {
-        res.status(200).type("text/plain").send("Esta es mi primera línea de respuesta")
-        
-        /*res.writeHead(200, { "content-type": "text/plain"})
-        res.write("Esta es mi primera línea de respuesta")
-        res.write("Esta es la segunda")
-        res.end("La comunicación terminó")*/
-    }
-
-    filterUsersByActive(req: Request, res: Response){
-        //const active = req.params.active
-        const { active } = req.params;
-        //console.log(typeof active);
-        const filter = active === "1" ? true: false
-        const usersFiltered = users.filter((user) => user.active === filter)
-        res.json(usersFiltered);
-        /*res.writeHead(200, { "content-type": "application/json"})
-        res.end(JSON.stringify(usersFiltered))*/
-    }
-    
-    responseGet(req: Request, res: Response){
-        res.send("Comunicación con el método GET")
-        /*res.writeHead(200, { "content-type": "text/plain"})
-        res.end("Comunicación con el método GET")*/
-    }
-    
-    responseHtml(req: Request, res: Response){
-        res.type("text/html").send("<h1>CursosDev</h1>")
-        /*res.writeHead(200, { "content-type": "text/html"})
-        res.write("<h1>CursosDev</h1>")
-        res.end()*/
-    }
-    
-    responseJson(req: Request, res: Response){
-        res.type("text/json").send('{"name": "CursosDev"}')
-        /*res.writeHead(200, { "content-type": "application/json"})
-        res.write('{"name": "CursosDev"}')
-        res.end()*/
-    }
-    
-    responsePdf(req: Request, res: Response){
-        const params = req.query
-        console.log(params)
-        console.log("Inicio de lectura de archivo pdf")
-    
-        fs.readFile(__dirname + "/public/manual.pdf", (err, content) => {
-            if (err){
-                console.log("An error happened")
-                res.send("An error happened")
-                /*res.writeHead(500, {"content-type": "text/plain"})
-                res.end("An error happened")*/
-            } else {
-                res.type("application/pdf").send(content)
-                /*res.writeHead(200, {"content-type": "application/pdf"})
-                res.write(content)
-                res.end()*/
-                console.log("Archivo enviado")
-            }
-        })
-    
-        console.log("Fin del código de lectura")
-    }
-    
-    responseNotFound(req: Request, res: Response){
-        res.send("Path not found")
-        /*res.writeHead(200, { "content-type": "text/plain"})
-        res.write("Path not found")
-        res.end()*/
+        this.app.use("/user", userRoutes)
     }
 }
 

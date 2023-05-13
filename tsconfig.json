@@ -12,6 +12,8 @@
     "paths": {
       "@core-domain/*": ["src/core/domain/*"]
     },
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   },
   "exclude": ["node_modules", "cache"],
   "include": ["src/**/*", "gulpfile.js"]
